@@ -41,8 +41,10 @@
                 <label for="pic_pinjam">PIC Peminjaman:</label>
                 <input type="text" name="pic_pinjam" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-success"><a href="index.php">Simpan</a></button> 
-            <button type="button" class="btn btn-secondary"><a href="index.php">Kembali</a></button>
+            <button type="submit" class="btn btn-success">Simpan</button> 
+            <button type="button" class="btn btn-secondary">
+                <a href="index.php" style="color:white;">Kembali</a>
+            </button>
         </form>
     </div>
 </body>

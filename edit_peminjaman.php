@@ -64,8 +64,10 @@ if (isset($_GET['id_pinjam'])) {
                 <input type="text" name="pic_pinjam" class="form-control" value="<?= $data['pic_pinjam']; ?>" required>
             </div>
 
-            <button type="submit" class="btn btn-success"><a href="index.php">Simpan Perubahan</a></button> 
-            <button type="submit" class="btn btn-secondary"><a href="index.php">Kembali</a></button>
+            <button type="submit" class="btn btn-success">Simpan Perubahan</button> 
+            <button type="button" class="btn btn-secondary">
+                <a href="index.php" style="color: white;">Kembali</a>
+            </button>
         </form>
     </div>
 </body>
