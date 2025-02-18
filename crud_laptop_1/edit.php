@@ -58,8 +58,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="HDD" <?= ($data['jenis_storage'] == "HDD") ? "selected" : ""; ?>>HDD</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-            <a href="index.php" class="btn btn-secondary">Kembali</a>
+            <div class="button-action">
+                <button type="submit" class="btn btn-success"><a href="index.php">Simpan Perubahan</a></button> 
+                <button type="submit" class="btn btn-secondary"><a href="index.php">Kembali</a></button>
+            </div>
         </form>
     </div>
 </body>

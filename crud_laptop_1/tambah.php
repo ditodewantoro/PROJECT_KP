@@ -64,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="HDD">HDD</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-success">Simpan</button> 
-            <a href="index.php" class="btn btn-secondary" >Kembali</a>
+            <button type="submit" class="btn btn-success"><a href="index.php">Simpan</a></button> 
+            <button type="button" class="btn btn-secondary"><a href="index.php">Kembali</a></button>
         </form>
     </div>
 </body>
