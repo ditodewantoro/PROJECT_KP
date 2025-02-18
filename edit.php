@@ -59,10 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <div class="button-action">
-            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-            <button type="button" class="btn btn-secondary"><a href="index.php" style="color: white;">Kembali</a></button>
+                <button type="submit" class="btn btn-success"><a href="index.php">Simpan Perubahan</a></button> 
+                <button type="submit" class="btn btn-secondary"><a href="index.php">Kembali</a></button>
             </div>
-    </form>
+        </form>
     </div>
 </body>
 </html>
