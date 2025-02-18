@@ -23,7 +23,7 @@ $result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
                     <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
                     <li class="nav__item"><a href="#laptop" class="nav__link">Laptop</a></li>
                     <li class="nav__item"><a href="tambah_peminjaman.php" class="nav__link">Peminjaman Barang</a></li>
-                    <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
+                    <li class="nav__item"><a href="#contact" class="nav__link">Kontak</a></li>
                 </ul>
             </div>
         </nav>
