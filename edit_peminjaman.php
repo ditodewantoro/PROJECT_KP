@@ -57,16 +57,16 @@ if (isset($_GET['id_pinjam'])) {
             </div>
             <div class="mb-3 form-group">
                 <label for="pic_it">PIC IT:</label>
-                <input type="text" name="pic_it" class="form-control" value="<?= $data['pic_it']; ?>" required>
+                <input type="text" name="pic_it" class="form-control" value="<?= $data['pic_it']; ?>" required readonly>
             </div>
             <div class="mb-3 form-group">
                 <label for="pic_pinjam">PIC Peminjaman:</label>
-                <input type="text" name="pic_pinjam" class="form-control" value="<?= $data['pic_pinjam']; ?>" required>
+                <input type="text" name="pic_pinjam" class="form-control" value="<?= $data['pic_pinjam']; ?>" required readonly>
             </div>
 
             <button type="submit" class="btn btn-success">Simpan Perubahan</button> 
             <button type="button" class="btn btn-secondary">
-                <a href="index.php" style="color: white;">Kembali</a>
+                <a href="admin_panel.php" style="color: white;">Kembali</a>
             </button>
         </form>
     </div>

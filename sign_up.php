@@ -1,34 +1,20 @@
 <?php
 include 'koneksi.php';
 
-// Jika form Sign Up disubmit
 if (isset($_POST['sign_up'])) {
-    // Mengambil data dari form
     $username = mysqli_real_escape_string($koneksi, $_POST['username']);
     $password = mysqli_real_escape_string($koneksi, $_POST['password']);
     $confirm_password = mysqli_real_escape_string($koneksi, $_POST['confirm_password']);
-    $id_divisi = mysqli_real_escape_string($koneksi, $_POST['id_divisi']); // Pastikan id_divisi diambil dengan benar
-    
-    // Mengecek apakah password dan confirm password cocok
-    if ($password != $confirm_password) {
+    $id_divisi = mysqli_real_escape_string($koneksi, $_POST['id_divisi']);
+
+    // Cek apakah password dan confirm password cocok
+    if ($password !== $confirm_password) {
         $error = "Password dan Konfirmasi Password tidak cocok!";
     } else {
-        // Hash password untuk keamanan
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        // Default level untuk user biasa
+        $level = 1;
 
-        // Menentukan level pengguna berdasarkan divisi
-        $level = 1; // Default level untuk user biasa
-        if ($id_divisi == 1) { // Divisi IT
-            $level = 1; // User di divisi IT
-        }
-        if ($id_divisi == 1 && $username == 'Admin IT') { // Admin hanya di divisi IT
-            $level = 2; // Admin di divisi IT
-        }
-        if ($id_divisi == 1 && $username == 'IT Manager') { // IT Manager hanya di divisi IT
-            $level = 3; // Administrator
-        }
-
-        // Memeriksa apakah username sudah ada
+        // Cek apakah username sudah ada di database
         $check_query = "SELECT * FROM tbl_user WHERE nama = ?";
         $stmt_check = mysqli_prepare($koneksi, $check_query);
         mysqli_stmt_bind_param($stmt_check, "s", $username);
@@ -37,14 +23,15 @@ if (isset($_POST['sign_up'])) {
 
         if (mysqli_num_rows($result_check) > 0) {
             $error = "Username sudah digunakan. Coba yang lain.";
+        } elseif (in_array($username, ['Admin IT', 'IT Manager'])) {
+            $error = "Anda tidak bisa menggunakan username ini!";
         } else {
-            // Menambahkan pengguna baru ke dalam tabel tbl_user
+            // Masukkan user baru ke database
             $query = "INSERT INTO tbl_user (nama, password, id_divisi, id_level) VALUES (?, ?, ?, ?)";
             $stmt = mysqli_prepare($koneksi, $query);
-            mysqli_stmt_bind_param($stmt, "ssii", $username, $hashed_password, $id_divisi, $level);
+            mysqli_stmt_bind_param($stmt, "ssii", $username, $password, $id_divisi, $level);
 
             if (mysqli_stmt_execute($stmt)) {
-                // Redirect ke halaman login setelah berhasil daftar
                 header("Location: login.php");
                 exit();
             } else {
@@ -52,9 +39,8 @@ if (isset($_POST['sign_up'])) {
             }
         }
 
-        // Menutup statement
+        // Tutup statement
         mysqli_stmt_close($stmt_check);
-        mysqli_stmt_close($stmt);
     }
 }
 ?>
@@ -97,7 +83,7 @@ if (isset($_POST['sign_up'])) {
                 <!-- Dropdown untuk memilih Divisi -->
                 <div class="form-group">
                     <label for="id_divisi">Divisi</label>
-                    <select name="id_divisi" id="id_divisi" class="form-control" required>
+                    <select name="id_divisi" id="id_divisi" class="form-control" style="" required>
                         <?php
                         // Mengambil data divisi dari tabel tbl_divisi
                         $query_divisi = "SELECT * FROM tbl_divisi";

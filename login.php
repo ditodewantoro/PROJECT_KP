@@ -1,13 +1,15 @@
 <?php
+session_start(); // Memulai sesi
+
 include 'koneksi.php';
 
 // Jika form login disubmit
 if (isset($_POST['login'])) {
-    // Mengambil data dari form login dan sanitasi input
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
+    // Mengambil data dari form login
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Query untuk mengecek user yang masuk menggunakan prepared statement
+    // Query untuk mengambil data user menggunakan prepared statement
     $query = "SELECT * FROM tbl_user WHERE nama = ?";
     $stmt = mysqli_prepare($koneksi, $query);
     mysqli_stmt_bind_param($stmt, "s", $username);
@@ -15,51 +17,43 @@ if (isset($_POST['login'])) {
     $result = mysqli_stmt_get_result($stmt);
 
     // Cek apakah data ditemukan
-    if (mysqli_num_rows($result) > 0) {
-        // Ambil data user
-        $user = mysqli_fetch_assoc($result);
-        $hashed_password = $user['password']; // Ambil password yang di-hash
-
+    if ($user = mysqli_fetch_assoc($result)) {
         // Verifikasi password
-        if (password_verify($password, $hashed_password)) {
-            // Verifikasi level pengguna dan arahkan ke halaman sesuai
-            $user_level = $user['id_level'];
-            $user_divisi = $user['id_divisi'];
+        if ($password === $user['password']) {
+            // Simpan data user ke sesi
+            $_SESSION['user_id'] = $user['id_user'];
+            $_SESSION['username'] = $user['nama'];
+            $_SESSION['user_level'] = $user['id_level'];
+            $_SESSION['user_divisi'] = $user['id_divisi'];
 
-            // Tentukan akses berdasarkan level
-            if ($user_level == 1) {
-                // Akses untuk user biasa
-                header("Location: user_dashboard.php?divisi=$user_divisi");
-                exit();
-            } elseif ($user_level == 2) {
-                // Akses untuk admin (admin divisi IT)
-                header("Location: admin_dashboard.php?divisi=$user_divisi");
-                exit();
-            } elseif ($user_level == 3) {
-                // Akses untuk administrator (IT Manager)
-                header("Location: admin_panel.php?divisi=$user_divisi");
-                exit();
-            } else {
-                // Jika level tidak dikenali
-                echo "Level pengguna tidak dikenali.";
+            // Arahkan pengguna ke halaman sesuai level
+            switch ($user['id_level']) {
+                case 1:
+                    header("Location: user_dashboard.php");
+                    break;
+                case 2:
+                    header("Location: admin_dashboard.php");
+                    break;
+                case 3:
+                    header("Location: admin_panel.php");
+                    break;
+                default:
+                    echo "Level pengguna tidak dikenali.";
+                    exit();
             }
+            exit();
         } else {
-            // Password tidak cocok
-            echo "Username atau password salah.";
+            echo "<script>alert('Username atau password salah!'); window.location.href='login.php';</script>";
         }
     } else {
-        echo "Username atau password salah.";
+        echo "<script>alert('Username atau password salah!'); window.location.href='login.php';</script>";
     }
-
     // Tutup statement
     mysqli_stmt_close($stmt);
 }
-
 // Tutup koneksi
 mysqli_close($koneksi);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -88,7 +82,7 @@ mysqli_close($koneksi);
                 </div>
                 <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
             </form>
-            <p class="text-center mt-3">Belum punya akun? <a href="sign_up.php">Daftar di sini</a></p>
+            <p class="text-center mt-3 text-black">Belum punya akun? <a href="sign_up.php">Daftar di sini</a></p>
         </div>
     </section>
 

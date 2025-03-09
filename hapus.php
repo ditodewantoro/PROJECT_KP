@@ -17,7 +17,7 @@ if (isset($_GET['id_barang'])) {
 
         if (mysqli_query($koneksi, $query_delete)) {
             // Redirect ke halaman daftar barang setelah berhasil dihapus
-            header("Location: index.php");
+            header("Location: admin_panel.php");
         } else {
             echo "Error: " . mysqli_error($koneksi);
         }

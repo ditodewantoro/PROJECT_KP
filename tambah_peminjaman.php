@@ -3,7 +3,7 @@
 <head>
     <title>Tambah Peminjaman Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css"> <!-- Link to your custom CSS file -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div class="container mt-4">
@@ -33,17 +33,9 @@
                 <label for="tgl_kembali">Tanggal Kembali:</label>
                 <input type="date" name="tgl_kembali" class="form-control" required>
             </div>
-            <div class="mb-3 form-group">
-                <label for="pic_it">PIC IT:</label>
-                <input type="text" name="pic_it" class="form-control" required>
-            </div>
-            <div class="mb-3 form-group">
-                <label for="pic_pinjam">PIC Peminjaman:</label>
-                <input type="text" name="pic_pinjam" class="form-control" required>
-            </div>
             <button type="submit" class="btn btn-success">Simpan</button> 
             <button type="button" class="btn btn-secondary">
-                <a href="index.php" style="color:white;">Kembali</a>
+                <a href="user_dashboard.php" style="color:white;">Kembali</a>
             </button>
         </form>
     </div>
