@@ -1,5 +1,18 @@
 <?php
+session_start();
+
 include 'koneksi.php';
+
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php');
+    exit();
+}
+
+if (!isset($_SESSION['user_level']) || $_SESSION['user_level'] != 3) {
+    echo "<script>alert('Role user tidak sesuai!'); window.location.href='login.php';</script>";
+    exit();
+}
+
 $result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
 ?>
 
@@ -16,7 +29,7 @@ $result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
 </head>
 <body>
     <header class="l-header" id="header">
-        <nav class="nav bd-container">
+        <nav class="nav bd-container" style="justify-content: space-between;">
             <a href="#" class="nav__logo">PT. Phapros Tbk</a>
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
@@ -25,6 +38,10 @@ $result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
                     <li class="nav__item"><a href="tambah_peminjaman.php" class="nav__link">Peminjaman Barang</a></li>
                     <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
                 </ul>
+            </div>
+            <div class="account" style="font-size: 16px;">
+                <?php echo $_SESSION['username']; ?>
+                <a href="logout.php" class="button" style="margin-left: 6px;">Logout</a>
             </div>
         </nav>
     </header>
@@ -60,7 +77,6 @@ $result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
             </div>
         </section>
 
-   
             <!-- Menampilkan Daftar Peminjaman -->
         <section class="product section bd-container" id="peminjaman">
             <span class="section-subtitle">Data Peminjaman</span>

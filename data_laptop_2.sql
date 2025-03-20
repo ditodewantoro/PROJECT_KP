@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 05 Mar 2025 pada 15.55
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Mar 09, 2025 at 09:53 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,40 +24,39 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_barang`
+-- Table structure for table `tbl_barang`
 --
 
 CREATE TABLE `tbl_barang` (
-  `id_barang` int(10) NOT NULL,
-  `Merk_tipe` varchar(50) NOT NULL,
-  `prosessor` varchar(50) NOT NULL,
-  `ram` int(10) NOT NULL,
-  `storage` int(10) NOT NULL,
-  `jenis_storage` varchar(10) NOT NULL
+  `id_barang` int NOT NULL,
+  `Merk_tipe` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `prosessor` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `ram` int NOT NULL,
+  `storage` int NOT NULL,
+  `jenis_storage` varchar(10) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `tbl_barang`
+-- Dumping data for table `tbl_barang`
 --
 
 INSERT INTO `tbl_barang` (`id_barang`, `Merk_tipe`, `prosessor`, `ram`, `storage`, `jenis_storage`) VALUES
 (1, 'lenovo', 'intel core I7', 4, 214, 'SSD'),
-(3, 'lenovo', 'intel core 19', 12, 111, 'SSD'),
-(222, 'HP', 'Ryzen 9', 111, 244, 'HDD');
+(3, 'lenovo', 'intel core 19', 12, 111, 'SSD');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_divisi`
+-- Table structure for table `tbl_divisi`
 --
 
 CREATE TABLE `tbl_divisi` (
-  `id_divisi` int(10) NOT NULL,
-  `nama_divisi` varchar(50) NOT NULL
+  `id_divisi` int NOT NULL,
+  `nama_divisi` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `tbl_divisi`
+-- Dumping data for table `tbl_divisi`
 --
 
 INSERT INTO `tbl_divisi` (`id_divisi`, `nama_divisi`) VALUES
@@ -70,17 +69,17 @@ INSERT INTO `tbl_divisi` (`id_divisi`, `nama_divisi`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_level`
+-- Table structure for table `tbl_level`
 --
 
 CREATE TABLE `tbl_level` (
-  `id_level` int(10) NOT NULL,
-  `nama_level` varchar(20) NOT NULL,
-  `level` varchar(2) NOT NULL
+  `id_level` int NOT NULL,
+  `nama_level` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `level` varchar(2) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `tbl_level`
+-- Dumping data for table `tbl_level`
 --
 
 INSERT INTO `tbl_level` (`id_level`, `nama_level`, `level`) VALUES
@@ -91,75 +90,85 @@ INSERT INTO `tbl_level` (`id_level`, `nama_level`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_peminjaman`
+-- Table structure for table `tbl_peminjaman`
 --
 
 CREATE TABLE `tbl_peminjaman` (
-  `id_pinjam` int(10) NOT NULL,
-  `id_barang` int(10) NOT NULL,
-  `keperluan_pinjam` text NOT NULL,
+  `id_pinjam` int NOT NULL,
+  `id_barang` int NOT NULL,
+  `keperluan_pinjam` text COLLATE utf8mb4_general_ci NOT NULL,
   `tgl_pinjam` date NOT NULL,
-  `durasi_pinjam` int(11) NOT NULL,
+  `durasi_pinjam` int NOT NULL,
   `tgl_kembali` date NOT NULL,
-  `pic_it` int(10) NOT NULL,
-  `pic_pinjam` int(10) NOT NULL
+  `pic_it` int DEFAULT NULL,
+  `pic_pinjam` int DEFAULT NULL,
+  `status` enum('pending','disetujui','ditolak') COLLATE utf8mb4_general_ci DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_peminjaman`
+--
+
+INSERT INTO `tbl_peminjaman` (`id_pinjam`, `id_barang`, `keperluan_pinjam`, `tgl_pinjam`, `durasi_pinjam`, `tgl_kembali`, `pic_it`, `pic_pinjam`, `status`) VALUES
+(11, 1, 'oooooo', '2025-03-09', 7, '2025-03-16', NULL, 11, 'pending'),
+(12, 1, 'fffff', '2025-03-10', 2, '2025-03-12', 2, 11, 'disetujui');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_user`
+-- Table structure for table `tbl_user`
 --
 
 CREATE TABLE `tbl_user` (
-  `id_user` int(10) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `id_divisi` int(10) NOT NULL,
-  `id_level` int(10) NOT NULL,
-  `password` varchar(50) NOT NULL
+  `id_user` int NOT NULL,
+  `nama` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_divisi` int NOT NULL,
+  `id_level` int NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `tbl_user`
+-- Dumping data for table `tbl_user`
 --
 
 INSERT INTO `tbl_user` (`id_user`, `nama`, `id_divisi`, `id_level`, `password`) VALUES
-(8, 'otiddwntr', 3, 3, '$2y$10$RqZHXPf35tV8LKWqfwSCHe95vY/q9M5ujVpZRJJEuTq'),
-(9, 'admin', 1, 1, '$2y$10$JjAWyC.pNAS3Z.FzN2JQQuLMIT8tfPBCnp1Ls8fyfAA');
+(1, 'administrator', 1, 3, 'administrator123'),
+(2, 'admin', 1, 2, 'admin123'),
+(11, 'dito', 3, 1, 'dito123');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `tbl_barang`
+-- Indexes for table `tbl_barang`
 --
 ALTER TABLE `tbl_barang`
   ADD PRIMARY KEY (`id_barang`);
 
 --
--- Indeks untuk tabel `tbl_divisi`
+-- Indexes for table `tbl_divisi`
 --
 ALTER TABLE `tbl_divisi`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
--- Indeks untuk tabel `tbl_level`
+-- Indexes for table `tbl_level`
 --
 ALTER TABLE `tbl_level`
   ADD PRIMARY KEY (`id_level`);
 
 --
--- Indeks untuk tabel `tbl_peminjaman`
+-- Indexes for table `tbl_peminjaman`
 --
 ALTER TABLE `tbl_peminjaman`
   ADD PRIMARY KEY (`id_pinjam`),
   ADD KEY `id_barang` (`id_barang`),
-  ADD KEY `pic_it` (`pic_it`),
-  ADD KEY `pic_pinjam` (`pic_pinjam`);
+  ADD KEY `fk_pic_it` (`pic_it`),
+  ADD KEY `fk_pic_pinjam` (`pic_pinjam`);
 
 --
--- Indeks untuk tabel `tbl_user`
+-- Indexes for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
   ADD PRIMARY KEY (`id_user`),
@@ -167,53 +176,53 @@ ALTER TABLE `tbl_user`
   ADD KEY `id_level` (`id_level`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_barang`
+-- AUTO_INCREMENT for table `tbl_barang`
 --
 ALTER TABLE `tbl_barang`
-  MODIFY `id_barang` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=898989899;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_divisi`
+-- AUTO_INCREMENT for table `tbl_divisi`
 --
 ALTER TABLE `tbl_divisi`
-  MODIFY `id_divisi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_divisi` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_level`
+-- AUTO_INCREMENT for table `tbl_level`
 --
 ALTER TABLE `tbl_level`
-  MODIFY `id_level` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_level` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_peminjaman`
+-- AUTO_INCREMENT for table `tbl_peminjaman`
 --
 ALTER TABLE `tbl_peminjaman`
-  MODIFY `id_pinjam` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_user`
+-- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `tbl_peminjaman`
+-- Constraints for table `tbl_peminjaman`
 --
 ALTER TABLE `tbl_peminjaman`
-  ADD CONSTRAINT `tbl_peminjaman_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `tbl_barang` (`id_barang`),
-  ADD CONSTRAINT `tbl_peminjaman_ibfk_2` FOREIGN KEY (`pic_it`) REFERENCES `tbl_user` (`id_user`),
-  ADD CONSTRAINT `tbl_peminjaman_ibfk_3` FOREIGN KEY (`pic_pinjam`) REFERENCES `tbl_user` (`id_user`);
+  ADD CONSTRAINT `fk_pic_it` FOREIGN KEY (`pic_it`) REFERENCES `tbl_user` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pic_pinjam` FOREIGN KEY (`pic_pinjam`) REFERENCES `tbl_user` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_peminjaman_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `tbl_barang` (`id_barang`);
 
 --
--- Ketidakleluasaan untuk tabel `tbl_user`
+-- Constraints for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
   ADD CONSTRAINT `tbl_user_ibfk_1` FOREIGN KEY (`id_divisi`) REFERENCES `tbl_divisi` (`id_divisi`),

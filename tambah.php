@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               VALUES ('$id_barang', '$Merk_tipe', '$prosessor', '$ram', '$storage', '$jenis_storage')";
 
     if (mysqli_query($koneksi, $query)) {
-        header("Location: index.php");
+        header("Location: admin_panel.php");
     } else {
         echo "Error: " . mysqli_error($koneksi);
     }
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="btn btn-success">Simpan</button> 
             <button type="button" class="btn btn-secondary">
-                <a href="index.php" style="color:white;">Kembali</a>
+                <a href="admin_panel.php" style="color:white;">Kembali</a>
             </button>
         </form>
     </div>

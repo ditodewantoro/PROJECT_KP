@@ -1,15 +1,25 @@
 <?php
 include 'koneksi.php';
 
-// Ambil id_user dari session yang login
 session_start();
-$user_id = $_SESSION['id_user'];
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+if (!isset($_SESSION['user_level']) || $_SESSION['user_level'] != 1) {
+    echo "<script>alert('Role user tidak sesuai!'); window.location.href='login.php';</script>";
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 
 // Query untuk mengambil data laptop yang tersedia
 $laptop_result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
 
 // Query untuk mengambil data peminjaman pengguna yang login
-$peminjaman_result = mysqli_query($koneksi, "SELECT * FROM tbl_peminjaman JOIN tbl_barang ON tbl_peminjaman.id_barang = tbl_barang.id_barang WHERE tbl_peminjaman.id_user = $user_id");
+$peminjaman_result = mysqli_query($koneksi, "SELECT * FROM tbl_peminjaman JOIN tbl_barang ON tbl_peminjaman.id_barang = tbl_barang.id_barang WHERE tbl_peminjaman.pic_pinjam = $user_id");
 
 ?>
 
@@ -25,6 +35,9 @@ $peminjaman_result = mysqli_query($koneksi, "SELECT * FROM tbl_peminjaman JOIN t
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <header>
+        <button><a href="logout.php">Logout</a></button>
+    </header>
     <!-- User Dashboard Content -->
     <main class="l-main">
         <section class="product section bd-container" id="laptop">

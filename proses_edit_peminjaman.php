@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               WHERE id_pinjam = $id_pinjam";
 
     if (mysqli_query($koneksi, $query)) {
-        header("Location: index.php"); // Kembali ke halaman utama setelah update berhasil
+        header("Location: admin_panel.php"); // Kembali ke halaman utama setelah update berhasil
     } else {
         echo "Error: " . mysqli_error($koneksi);
     }

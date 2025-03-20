@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $query = "UPDATE tbl_barang SET id_barang='$id_barang', Merk_tipe='$Merk_tipe', prosessor='$prosessor', ram='$ram', storage='$storage', jenis_storage='$jenis_storage' WHERE id_barang='$id'";
     mysqli_query($koneksi, $query);
-    header("Location: index.php");
+    header("Location: admin_panel.php");
 }
 ?>
 
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
         <button type="submit" class="btn btn-success">Simpan Perubahan</button> 
         <button type="button" class="btn btn-secondary">
-            <a href="index.php" style="color: white;">Kembali</a>
+            <a href="admin_panel.php" style="color: white;">Kembali</a>
         </button>   
         </form>
     </div>
