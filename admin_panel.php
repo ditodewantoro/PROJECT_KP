@@ -346,16 +346,16 @@ $username = $_SESSION['username'];
                                     </td>
                                     <td class="action-buttons-table">
                                         <?php if ($row_peminjaman['status'] == "pending") : ?>
-                                            <form action="proses_persetujuan.php" method="POST" class="d-inline">
+                                            <form action="proses_persetujuan_admin.php" method="POST" class="d-inline">
                                                 <input type="hidden" name="id_pinjam" value="<?= htmlspecialchars($row_peminjaman['id_pinjam']); ?>">
                                                 <input type="hidden" name="pic_it" value="<?= htmlspecialchars($_SESSION['user_id']); ?>">
                                                 <button type="submit" name="approve" class="btn btn-success btn-sm" onclick="return confirm('Setujui peminjaman ini?')">Setujui</button>
                                                 <button type="submit" name="reject" class="btn btn-danger btn-sm" onclick="return confirm('Tolak peminjaman ini?')">Tolak</button>
                                             </form>
                                         <?php elseif ($row_peminjaman['status'] == "disetujui") : ?>
-                                            <a href="hapus_peminjaman.php?id_pinjam=<?= htmlspecialchars($row_peminjaman['id_pinjam']); ?>" class="btn btn-info btn-sm" onclick="return confirm('Apakah peminjaman ini sudah selesai dan laptop sudah dikembalikan?')">Selesai</a>
+                                            <a href="proses_pengembalian.php?id_pinjam=<?= htmlspecialchars($row_peminjaman['id_pinjam']); ?>" class="btn btn-info btn-sm" onclick="return confirm('Apakah peminjaman ini sudah selesai dan laptop sudah dikembalikan?')">Selesai</a>
                                         <?php else: ?>
-                                            <span class="text-muted">Tidak ada aksi</span>
+                                            <a href="hapus_peminjaman.php?id_pinjam=<?= htmlspecialchars($row_peminjaman['id_pinjam']); ?>" class="btn btn-warning btn-sm" onclick="return confirm('PERINGATAN! Ini akan menghapus permanen riwayat peminjaman ini. Lanjutkan?')">Hapus</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

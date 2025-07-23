@@ -32,12 +32,14 @@ $query_peminjaman = "SELECT
                         p.keperluan_pinjam, 
                         p.tgl_pinjam, 
                         p.tgl_kembali, 
-                        u1.nama AS nama_peminjam, 
+                        u1.nama AS nama_peminjam,
+                        d.nama_divisi AS nama_divisi_peminjam, 
                         COALESCE(u2.nama, '-') AS nama_pic_it, 
                         p.status
                     FROM tbl_peminjaman p
                     JOIN tbl_barang b ON p.id_barang = b.id_barang
                     JOIN tbl_user u1 ON p.pic_pinjam = u1.id_user
+                    JOIN tbl_divisi d ON u1.id_divisi = d.id_divisi
                     LEFT JOIN tbl_user u2 ON p.pic_it = u2.id_user
                     ORDER BY p.tgl_pinjam DESC";
 
@@ -277,7 +279,7 @@ if (!$result_peminjaman) {
                                         <p class="mt-3"><strong>Keperluan:</strong> <?= htmlspecialchars($row['keperluan_pinjam']); ?></p>
                                         <p><strong>Tanggal Pinjam:</strong> <?= htmlspecialchars($row['tgl_pinjam']); ?></p>
                                         <p><strong>Tanggal Kembali:</strong> <?= htmlspecialchars($row['tgl_kembali']); ?></p>
-                                        <p><strong>PIC Peminjam:</strong> <?= htmlspecialchars($row['nama_peminjam']); ?></p>
+                                        <p><strong>PIC Peminjam:</strong> <?= htmlspecialchars($row['nama_peminjam']); ?> | </strong> <?= htmlspecialchars($row['nama_divisi_peminjam']); ?></p> 
                                         <p><strong>PIC IT (Penanganan):</strong> <?= htmlspecialchars($row['nama_pic_it']); ?></p>
                                     </div>
                                     <div class="action-buttons-card">
@@ -289,7 +291,7 @@ if (!$result_peminjaman) {
                                                 <button type="submit" name="reject" class="btn btn-danger btn-sm" onclick="return confirm('Tolak peminjaman ini?')">Tolak</button>
                                             </form>
                                         <?php elseif ($row['status'] == "disetujui") : ?>
-                                            <a href="hapus_peminjaman_admin.php?id_pinjam=<?= htmlspecialchars($row['id_pinjam']); ?>" class="btn btn-info btn-sm" onclick="return confirm('Apakah peminjaman ini sudah selesai dan laptop sudah dikembalikan?')">Tandai Selesai</a>
+                                            <a href="proses_pengembalian.php?id_pinjam=<?= htmlspecialchars($row['id_pinjam']); ?>" class="btn btn-info btn-sm" onclick="return confirm('Apakah peminjaman ini sudah selesai dan laptop sudah dikembalikan?')">Tandai Selesai</a>
                                         <?php else: ?>
                                             <span class="text-muted">Aksi tidak tersedia</span>
                                         <?php endif; ?>

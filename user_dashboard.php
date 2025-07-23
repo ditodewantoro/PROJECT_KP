@@ -24,9 +24,21 @@ $user_id = $_SESSION['user_id'];
 // Mengambil username dari sesi untuk ditampilkan di dashboard
 $username = $_SESSION['username'];
 
-// Query untuk mengambil semua data laptop yang tersedia
-// Ini akan menampilkan semua laptop yang tersedia untuk pengguna
-$laptop_result = mysqli_query($koneksi, "SELECT * FROM tbl_barang");
+// Query untuk mengambil data laptop yang tersedia (tidak sedang dipinjam atau menunggu persetujuan)
+$laptop_query = "SELECT *
+                 FROM tbl_barang
+                 WHERE id_barang NOT IN (
+                     SELECT id_barang
+                     FROM tbl_peminjaman
+                     WHERE status IN ('pending', 'disetujui')
+                 )";
+
+$laptop_result = mysqli_query($koneksi, $laptop_query);
+
+// Cek jika query gagal (untuk debugging)
+if (!$laptop_result) {
+    die("Query Laptop Gagal: " . mysqli_error($koneksi));
+}
 
 // Query UNTUK MENGAMBIL DATA PEMINJAMAN PENGGUNA DENGAN SEMUA STATUS
 // Menghapus kondisi WHERE status = 'disetujui' agar semua status ditampilkan

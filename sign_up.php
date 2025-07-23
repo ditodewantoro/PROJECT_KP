@@ -24,6 +24,8 @@ if (isset($_POST['sign_up'])) {
         if (mysqli_num_rows($result_check) > 0) {
             $error = "Username sudah digunakan. Coba yang lain.";
         } elseif (in_array($username, ['Admin IT', 'IT Manager'])) {
+            // Anda mungkin perlu menyesuaikan ini jika nama 'administrator' atau 'admin' di database tidak sama persis dengan 'Admin IT' / 'IT Manager'
+            // Lebih baik mengecek berdasarkan id_level jika ingin melarang nama admin yang sudah ada.
             $error = "Anda tidak bisa menggunakan username ini!";
         } else {
             // Masukkan user baru ke database
@@ -40,7 +42,12 @@ if (isset($_POST['sign_up'])) {
         }
 
         // Tutup statement
-        mysqli_stmt_close($stmt_check);
+        if (isset($stmt_check) && $stmt_check !== false) {
+            mysqli_stmt_close($stmt_check);
+        }
+        if (isset($stmt) && $stmt !== false) {
+            mysqli_stmt_close($stmt);
+        }
     }
 }
 ?>
@@ -52,7 +59,6 @@ if (isset($_POST['sign_up'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | PT. Phapros Tbk</title>
-    <!-- Menambahkan Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -60,7 +66,6 @@ if (isset($_POST['sign_up'])) {
     <section class="d-flex justify-content-center align-items-center vh-100">
         <div class="sign-up-container p-5 shadow rounded bg-white" style="width: 100%; max-width: 400px;">
             <h2 class="text-center mb-4">Sign Up</h2>
-            <!-- Form Sign Up -->
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger" role="alert">
                     <?= $error; ?>
@@ -70,27 +75,30 @@ if (isset($_POST['sign_up'])) {
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username" class="form-control" required>
+                    <small class="form-text text-muted">Isi dengan nama asli lengkap Anda (misal: Budi Santoso).</small>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" class="form-control" required>
+                    <small class="form-text text-muted">Berikan kombinasi huruf dan angka.</small>
                 </div>
                 <div class="form-group">
                     <label for="confirm_password">Konfirmasi Password</label>
                     <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
                 </div>
 
-                <!-- Dropdown untuk memilih Divisi -->
                 <div class="form-group">
                     <label for="id_divisi">Divisi</label>
-                    <select name="id_divisi" id="id_divisi" class="form-control" style="" required>
+                    <select name="id_divisi" id="id_divisi" class="form-control" required>
                         <?php
                         // Mengambil data divisi dari tabel tbl_divisi
                         $query_divisi = "SELECT * FROM tbl_divisi";
                         $result_divisi = mysqli_query($koneksi, $query_divisi);
                         while ($row = mysqli_fetch_assoc($result_divisi)) {
-                            echo "<option value='" . $row['id_divisi'] . "'>" . $row['nama_divisi'] . "</option>";
+                            echo "<option value='" . $row['id_divisi'] . "'>" . htmlspecialchars($row['nama_divisi']) . "</option>";
                         }
+                        // Tutup koneksi setelah selesai mengambil data divisi
+                        mysqli_close($koneksi);
                         ?>
                     </select>
                 </div>
@@ -101,7 +109,6 @@ if (isset($_POST['sign_up'])) {
         </div>
     </section>
 
-    <!-- Menambahkan Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
